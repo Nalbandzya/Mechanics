@@ -1,43 +1,32 @@
 public class Autoassociator {
-	private int weights[][];
-	private int trainingCapacity;
-	
-	public Autoassociator(CourseArray courses) {
-		// TO DO
-		// creates a new Hopfield network with the same number of neurons 
-		// as the number of courses in the input CourseArray
+	private int[][] weights;
+	private int size;
+
+	public Autoassociator() {}
+
+	public void train(int[][] data) {
+		size = data[0].length;
+		weights = new int[size][size];
+		for (int[] pattern : data) {
+			for (int i = 0; i < size; i++) {
+				for (int j = 0; j < size; j++) {
+					if (i != j) {
+						weights[i][j] += pattern[i] * pattern[j];
+					}
+				}
+			}
+		}
 	}
-	
-	public int getTrainingCapacity() {
-		// TO DO
-		
-		return 0;
-	}
-	
-	public void training(int pattern[]) {
-		// TO DO
-	}
-	
-	public int unitUpdate(int neurons[]) {
-		// TO DO
-		// implements a single update step and
-		// returns the index of the randomly selected and updated neuron
-		
-		return 0;
-	}
-	
-	public void unitUpdate(int neurons[], int index) {
-		// TO DO
-		// implements the update step of a single neuron specified by index
-	}
-	
-	public void chainUpdate(int neurons[], int steps) {
-		// TO DO
-		// implements the specified number od update steps
-	}
-	
-	public void fullUpdate(int neurons[]) {
-		// TO DO
-		// updates the input until the final state achieved
+
+	public int[] recall(int[] pattern) {
+		int[] result = pattern.clone();
+		for (int i = 0; i < size; i++) {
+			int sum = 0;
+			for (int j = 0; j < size; j++) {
+				sum += weights[i][j] * pattern[j];
+			}
+			result[i] = sum >= 0 ? 1 : -1;
+		}
+		return result;
 	}
 }
